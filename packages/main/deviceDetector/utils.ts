@@ -31,6 +31,10 @@ export async function getDeviceUuid(
     logger.silly('address is null')
     return false
   }
+  if (typeof adbPath != 'string') {
+    logger.silly('adb_path is not a string')
+    adbPath = defaultAdbPath
+  }
   const connectResult = (await $$(adbPath, ['connect', address])).stdout
   if (connectResult.includes('connected')) {
     const ret = await $`"${adbPath}" -s ${address} shell settings get secure android_id`
